@@ -9,7 +9,7 @@ const suppliersSchema = new mongoose.Schema(
         city: {type: String, required: true, maxLength: 200, minLength: 2},
         uf: {type: String, required: true, maxLength: 200, minLength: 2},
         telephone: {type: Number, required: true, maxLength: 200, minLength: 2},
-        ZipCode: {type: Number, required: true, maxLength: 200, minLength: 2},
+        zipCode: {type: Number, required: true, maxLength: 200, minLength: 2},
         email: {type: String, required: true, maxLength: 200, minLength: 2},
         cnpj: {type: String, required: true, maxLength: 200, minLength: 2},
         lineOfBusinesscontact: {type: String, required: true, maxLength: 200, minLength: 2},

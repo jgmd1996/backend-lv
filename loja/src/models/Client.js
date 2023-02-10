@@ -9,8 +9,8 @@ const clientSchema = new mongoose.Schema(
         address: { type: String, required: true },
         dateOfBirth: { type: String, required: true },
         sex: { type: String, required: true },
-        CPF: { type: Number, required: true },
-        product: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Products' }],
+        cpf: { type: Number, required: true },
+        order: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }]
   },
   {
       versionKey: false

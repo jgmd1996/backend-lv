@@ -104,11 +104,11 @@ module.exports = class ProductService extends BaseService {
     async findAll() {
         const pathsValues = [
             {
-                path: 'client'  
+                path: 'suppliers'
             },
             {
-                path: 'suppliers'  
-            },
+                path: 'order'  
+            }
         ];
 
         return await super.findPopulate({}, pathsValues);

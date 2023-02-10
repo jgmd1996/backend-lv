@@ -46,7 +46,7 @@ const schema = {
             tooLong: '^Telefone deve conter no máximo 200 caracteres. '
         }
     },
-    ZipCode: {
+    zipCode: {
         presence: { allowEmpty: false, message: '^CEP é obrigatório. ' },
         length: {
             maximum: 200,

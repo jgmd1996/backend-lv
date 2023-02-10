@@ -2,6 +2,7 @@ const express = require('express');
 const product = require('./src/routes/ProductRoutes');
 const suppliers = require('./src/routes/SuppliersRoutes');
 const client = require('./src/routes/ClientRoutes')
+const order = require('./src/routes/OrderRoutes')
 const cors = require('cors');
 const mongoose = require( "mongoose");
 
@@ -40,7 +41,8 @@ app.use(
     express.json(),
     product,
     suppliers,
-    client
+    client,
+    order
 )
 
  app.listen(port, () => {

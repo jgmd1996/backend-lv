@@ -46,7 +46,7 @@ const schema = {
             tooLong: '^Sexo deve conter no máximo 200 caracteres. '
         }
     },
-    CPF: {
+    cpf: {
         presence: { allowEmpty: false, message: '^CPF é obrigatório. ' },
         length: {
             maximum: 200,
@@ -124,7 +124,7 @@ module.exports = class ClientService extends BaseService {
     async findAll() {
         const pathsValues = [
             {
-                path: 'product'  
+                path: 'order'  
             }
         ];
 
