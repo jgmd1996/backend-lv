@@ -21,7 +21,7 @@ const schema = {
     telephone: {
         presence: { allowEmpty: false, message: '^Telefone é obrigatório. ' },
         length: {
-            maximum: 200,
+            maximum: 99999999999,
             tooLong: '^Telefone deve conter no máximo 200 caracteres. '
         }
     },
@@ -35,24 +35,24 @@ const schema = {
     dateOfBirth: {
         presence: { allowEmpty: false, message: '^Data de nascimento é obrigatório. ' },
         length: {
-            maximum: 200,
+            maximum: 99999999,
             tooLong: '^Data de nascimento deve conter no máximo 200 caracteres. '
         }
     },
     sex: {
         presence: { allowEmpty: false, message: '^Sexo é obrigatório. ' },
         length: {
-            maximum: 200,
+            maximum: 50,
             tooLong: '^Sexo deve conter no máximo 200 caracteres. '
         }
     },
     cpf: {
         presence: { allowEmpty: false, message: '^CPF é obrigatório. ' },
         length: {
-            maximum: 200,
+            maximum: 99999999999,
             tooLong: '^CPF deve conter no máximo 200 caracteres. '
         }
-    },   
+    } 
 };
 
 module.exports = class ClientService extends BaseService {

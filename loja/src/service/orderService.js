@@ -7,8 +7,8 @@ const schema = {
     amount: {
         presence: { allowEmpty: false, message: '^Quantidade é obrigatório. ' },
         length: {
-            maximum: 200,
-            tooLong: '^Quantidade deve conter no máximo 200 caracteres. '
+            maximum: 1000,
+            tooLong: '^Quantidade deve conter de 1 a 1000 caracteres. '
         }
     },
     description: {
@@ -17,7 +17,15 @@ const schema = {
             maximum: 200,
             tooLong: '^Descrição deve conter no máximo 200 caracteres. '
         }
-    }  
+    }, client: {
+        presence: { allowEmpty: false, message: '^Cliente é obrigatório. ' },
+        length: {
+            maximum: 1,
+            tooLong: '^ Deve conter no máximo 1 cliente. '
+        }
+    }, products: {
+        presence: { allowEmpty: false, message: '^Produtos é obrigatório. ' },//aqui do produto eu consigo pegar o nome do produto
+    }
 };
 
 module.exports = class OrderService extends BaseService {
@@ -61,7 +69,7 @@ module.exports = class OrderService extends BaseService {
 
     async update(order) {
         const session = await super.getSession();
-        
+
         try {
             let errors = await this.validation(order);
 
@@ -89,13 +97,13 @@ module.exports = class OrderService extends BaseService {
     async findAll() {
         const pathsValues = [
             {
-                path: 'products'  
+                path: 'products',
+                populate: [{ path: 'suppliers' }]
             },
             {
-                path: 'client'  
+                path: 'client'
             }
         ];
-
         return await super.findPopulate({}, pathsValues);
     }
 }

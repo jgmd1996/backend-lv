@@ -4,18 +4,11 @@ const BaseService = require("./baseService");
 
 const schema = {
 
-    name: {
-        presence: { allowEmpty: false, message: '^Nome é obrigatório. ' },
-        length: {
-            maximum: 200,
-            tooLong: '^Nome deve conter no máximo 200 caracteres. '
-        }
-    },
     price: {
         presence: { allowEmpty: false, message: '^Preço é obrigatório. ' },
         length: {
-            maximum: 200,
-            tooLong: '^Preço deve conter no máximo 200 caracteres. '
+            maximum: 1000,
+            tooLong: '^Preço deve conter no máximo 1000 caracteres. '
         }
     },
     description: {
@@ -28,8 +21,14 @@ const schema = {
     amount: {
         presence: { allowEmpty: false, message: '^Quantidade é obrigatório. ' },
         length: {
-            maximum: 200,
-            tooLong: '^Quantidade deve conter no máximo 200 caracteres. '
+            maximum: 1000,
+            tooLong: '^Quantidade deve conter no máximo 1000 caracteres. '
+        }
+    }, suppliers: {
+        presence: { allowEmpty: false, message: '^Fornecedor é obrigatório. ' },
+        length: {
+            maximum: 1,
+            tooLong: '^ Deve conter no máximo 1 fornecedor. '
         }
     },
     

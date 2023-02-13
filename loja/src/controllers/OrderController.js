@@ -44,7 +44,7 @@ exports.findByAll = async function (req, res, next) {
   try {
       const order = await orderService.findAll();
       if (!order || order.length === 0) {
-          return res.status(404).send({message: 'Pedidos não encontradas.'});
+          return res.status(404).send({message: 'Pedidos não encontrados.'});
       }
       return res.status(200).json({orders: order});
   } catch (e) {

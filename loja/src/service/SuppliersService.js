@@ -35,22 +35,22 @@ const schema = {
     uf: {
         presence: { allowEmpty: false, message: '^UF é obrigatório. ' },
         length: {
-            maximum: 200,
-            tooLong: '^UF deve conter no máximo 200 caracteres. '
+            maximum: 2,
+            tooLong: '^UF deve conter no máximo 2 caracteres. '
         }
     },
     telephone: {
         presence: { allowEmpty: false, message: '^Telefone é obrigatório. ' },
         length: {
-            maximum: 200,
-            tooLong: '^Telefone deve conter no máximo 200 caracteres. '
+            maximum: 99999999999,
+            tooLong: '^Telefone deve conter no máximo 10 caracteres. '
         }
     },
     zipCode: {
         presence: { allowEmpty: false, message: '^CEP é obrigatório. ' },
         length: {
-            maximum: 200,
-            tooLong: '^CEP deve conter no máximo 200 caracteres. '
+            maximum: 99999999,
+            tooLong: '^CEP deve conter no máximo 99999999 caracteres. '
         }
     },
     email: {
@@ -63,8 +63,8 @@ const schema = {
     cnpj: {
         presence: { allowEmpty: false, message: '^CNPJ é obrigatório. ' },
         length: {
-            maximum: 200,
-            tooLong: '^CNPJ deve conter no máximo 200 caracteres. '
+            maximum: 99999999999999,
+            tooLong: '^CNPJ deve conter no máximo 99999999999999 caracteres. '
         }
     },
     lineOfBusinesscontact: {
@@ -91,8 +91,8 @@ const schema = {
     price: {
         presence: { allowEmpty: false, message: '^Preço do produto é obrigatório. ' },
         length: {
-            maximum: 200,
-            tooLong: '^Preço do produto deve conter no máximo 200 caracteres. '
+            maximum: 1000,
+            tooLong: '^Preço do produto deve conter no máximo 1000 caracteres. '
         }
     },
 };
