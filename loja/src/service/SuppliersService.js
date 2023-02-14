@@ -2,7 +2,7 @@ const validate = require('validate.js');
 const Suppliers = require('../models/Suppliers');
 const BaseService = require("./baseService");
 
-const schema = {
+const schema = {//Aqui onde crio a validação do formulario de acordo com o model
 
     socialDenomination: {
         presence: { allowEmpty: false, message: '^Denominação social é obrigatório. ' },
@@ -103,67 +103,67 @@ module.exports = class SuppliersService extends BaseService {
         super(schema, Suppliers);
     };
     
-    async validation(suppliers) {
+    async validation(suppliers) {//aqui retorna o que foi validade se esta correto ou não
         return super.validation(suppliers);
     };
 
-    async create(suppliers) {
+    async create(suppliers) {//aqui é criado o fornecedor
         const session = await super.getSession();
 
         try {
-            let errors = await this.validation(suppliers);
+            let errors = await this.validation(suppliers);//aqui atribuo fornecedor a erros
 
-            if (errors) {
+            if (errors) {//aqui válido se erross, for diferente de vazio então retorno o statusCode e mensagem de erro
                 const errorMessage = await this.buildErrorMessage(errors);
                 return { error: errors, statusCode: 400, message: errorMessage };
-            }
+            }//apos validação, se for feita de maneira correta vai fazer o retorno de fornecedor saved e status code 201
             const suppliersDb = new Suppliers({ ...suppliers });
             await session.startTransaction();
-            let suppliersSaved = await super.save(suppliersDb, session);
+            let suppliersSaved = await super.save(suppliersDb, session);//usada para acessar a classe pai e salvar.
             await session.commitTransaction();
 
-            return { suppliers: suppliersSaved, statusCode: 201 };
+            return { suppliers: suppliersSaved, statusCode: 201 };//retorno
 
         } catch (e) {
 
             if (session.inTransaction()) {
-                await session.abortTransaction();
+                await session.abortTransaction();//em caso de erro session aborta transação
             }
 
             throw e;
         } finally {
-            session.endSession();
+            session.endSession();// em caso de erro da session finaliza 
         }
     };
 
-    async update(suppliers) {
+    async update(suppliers) {// aqui onde faço o atualizar fornecedor
         const session = await super.getSession();
         
         try {
             let errors = await this.validation(suppliers);
 
-            const suppliersDb = await super.findById(suppliers.id);
+            const suppliersDb = await super.findById(suppliers.id);//aqui to buscando o fornecedor com o id,com a função do base service.
 
-            if (!suppliersDb) {
-                return { error: errors, statusCode: 400, message: 'Fornecedor não encontrado' };
+            if (!suppliersDb) {//se não for encontrado retorno o status code de erro e a mensagem
+                return { error: errors, statusCode: 400, message: 'Fornecedor não encontrado' };//retorno em caso de erro
             }
 
-            let suppliersSaved = await super.save(suppliers, session);
+            let suppliersSaved = await super.save(suppliers, session);//usada para acessar a classe pai e salvar.
 
-            return { suppliers: suppliersSaved, statusCode: 200 };
+            return { suppliers: suppliersSaved, statusCode: 200 };//retorno correto
         } catch (e) {
 
             if (session.inTransaction()) {
-                await session.abortTransaction();
+                await session.abortTransaction();//em caso de erro session aborta transação
             }
 
             throw e;
         } finally {
-            session.endSession();
+            session.endSession();// em caso de erro da session finaliza 
         }
     };
 
-    async findAll() {
+    async findAll() {//aqui e para busca todos
         const pathsValues = [
             {
                 path: 'product'  
@@ -173,3 +173,8 @@ module.exports = class SuppliersService extends BaseService {
         return await super.findPopulate({}, pathsValues);
     }
 }
+
+
+
+//service:
+//E onde fica  a validação do código,onde fica a regras do sistema,tem intermediação entre o model e o controller.

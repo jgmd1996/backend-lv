@@ -16,11 +16,19 @@ const suppliersSchema = new mongoose.Schema(
         functions: {type: String, required: true, max: 200, min: 2},
         ProductName: {type: String, required: true, max: 200, min: 2},
         price: {type: Number, required: true, max: 1000, min: 1},
-        product: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Products',required: true }],
-        order: [{ type: mongoose.Schema.Types.ObjectId, ref: 'order' }],
+        product: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Products',required: true }],//ligação entre fornecedor e produtos
+        order: [{ type: mongoose.Schema.Types.ObjectId, ref: 'order' }],//ligação entre fornecedor e pedidos
     },
     {
         versionKey: false
     }
 )
-module.exports= mongoose.model("Suppliers", suppliersSchema);
+module.exports= mongoose.model("Suppliers", suppliersSchema);//exporta o schema
+
+
+
+//O model é um espelho das tabelas do banco de dados com seus atributos
+
+
+//( new mongoose.Schema)gerencia o relacionamento entre dados, fornece a 
+//validação de esquemas e é usado como tradutor entre objetos no código e a representação desses objetos no MongoDB.
