@@ -1,8 +1,8 @@
 const validate = require('validate.js');
-const Suppliers = require('../models/Suppliers');
-const BaseService = require("./baseService");
+const Suppliers = require('../model/supplier.model');
+const BaseService = require("./base.service");
 
-const schema = {//Aqui onde crio a validação do formulario de acordo com o model
+const schema = {
 
     socialDenomination: {
         presence: { allowEmpty: false, message: '^Denominação social é obrigatório. ' },
@@ -81,13 +81,6 @@ const schema = {//Aqui onde crio a validação do formulario de acordo com o mod
             tooLong: '^Função da empresa deve conter no máximo 200 caracteres. '
         }
     },
-    ProductName: {
-        presence: { allowEmpty: false, message: '^Nome do produto é obrigatório. ' },
-        length: {
-            maximum: 200,
-            tooLong: '^Nome do produto deve conter no máximo 200 caracteres. '
-        }
-    },
     price: {
         presence: { allowEmpty: false, message: '^Preço do produto é obrigatório. ' },
         length: {
@@ -103,67 +96,67 @@ module.exports = class SuppliersService extends BaseService {
         super(schema, Suppliers);
     };
     
-    async validation(suppliers) {//aqui retorna o que foi validade se esta correto ou não
+    async validation(suppliers) {
         return super.validation(suppliers);
     };
 
-    async create(suppliers) {//aqui é criado o fornecedor
+    async create(suppliers) {
         const session = await super.getSession();
 
         try {
-            let errors = await this.validation(suppliers);//aqui atribuo fornecedor a erros
+            let errors = await this.validation(suppliers);
 
-            if (errors) {//aqui válido se erross, for diferente de vazio então retorno o statusCode e mensagem de erro
+            if (errors) {
                 const errorMessage = await this.buildErrorMessage(errors);
                 return { error: errors, statusCode: 400, message: errorMessage };
-            }//apos validação, se for feita de maneira correta vai fazer o retorno de fornecedor saved e status code 201
+            }
             const suppliersDb = new Suppliers({ ...suppliers });
             await session.startTransaction();
-            let suppliersSaved = await super.save(suppliersDb, session);//usada para acessar a classe pai e salvar.
+            let suppliersSaved = await super.save(suppliersDb, session);
             await session.commitTransaction();
 
-            return { suppliers: suppliersSaved, statusCode: 201 };//retorno
+            return { suppliers: suppliersSaved, statusCode: 201 };
 
         } catch (e) {
 
             if (session.inTransaction()) {
-                await session.abortTransaction();//em caso de erro session aborta transação
+                await session.abortTransaction();
             }
 
             throw e;
         } finally {
-            session.endSession();// em caso de erro da session finaliza 
+            session.endSession();
         }
     };
 
-    async update(suppliers) {// aqui onde faço o atualizar fornecedor
+    async update(suppliers) {
         const session = await super.getSession();
         
         try {
             let errors = await this.validation(suppliers);
 
-            const suppliersDb = await super.findById(suppliers.id);//aqui to buscando o fornecedor com o id,com a função do base service.
+            const suppliersDb = await super.findById(suppliers.id);
 
-            if (!suppliersDb) {//se não for encontrado retorno o status code de erro e a mensagem
-                return { error: errors, statusCode: 400, message: 'Fornecedor não encontrado' };//retorno em caso de erro
+            if (!suppliersDb) {
+                return { error: errors, statusCode: 400, message: 'Fornecedor não encontrado' };
             }
 
-            let suppliersSaved = await super.save(suppliers, session);//usada para acessar a classe pai e salvar.
+            let suppliersSaved = await super.save(suppliers, session);
 
-            return { suppliers: suppliersSaved, statusCode: 200 };//retorno correto
+            return { suppliers: suppliersSaved, statusCode: 200 };
         } catch (e) {
 
             if (session.inTransaction()) {
-                await session.abortTransaction();//em caso de erro session aborta transação
+                await session.abortTransaction();
             }
 
             throw e;
         } finally {
-            session.endSession();// em caso de erro da session finaliza 
+            session.endSession();
         }
     };
 
-    async findAll() {//aqui e para busca todos
+    async findAll() {
         const pathsValues = [
             {
                 path: 'product'  
@@ -173,8 +166,3 @@ module.exports = class SuppliersService extends BaseService {
         return await super.findPopulate({}, pathsValues);
     }
 }
-
-
-
-//service:
-//E onde fica  a validação do código,onde fica a regras do sistema,tem intermediação entre o model e o controller.

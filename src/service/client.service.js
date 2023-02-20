@@ -1,8 +1,8 @@
 const validate = require('validate.js');
-const Client = require('../models/Client');
-const BaseService = require("./baseService");
+const Client = require('../model/client.model');
+const BaseService = require("./base.service");
 
-const schema = {//Aqui onde crio a validação do formulario de acordo com o model
+const schema = {
 
     name: {
         presence: { allowEmpty: false, message: '^Nome é obrigatório. ' },
@@ -61,68 +61,67 @@ module.exports = class ClientService extends BaseService {
         super(schema, Client);
     };
 
-    async validation(client) {//aqui retorna o que foi validade se esta correto ou não
+    async validation(client) {
         return super.validation(client);
     };
 
-    async create(client) {//aqui é criado o cliente
+    async create(client) {
         const session = await super.getSession();
 
         try {
-            let errors = await this.validation(client);//aqui atribuo cliente a erros
+            let errors = await this.validation(client);
 
-            if (errors) {//aqui válido se erross, for diferente de vazio então retorno o statusCode e mensagem de erro
+            if (errors) {
                 const errorMessage = await this.buildErrorMessage(errors);
                 return { error: errors, statusCode: 400, message: errorMessage };
-            }//apos validação, se for feita de maneira correta vai fazer o retorno de cliente saved e status code 201
+            }
             const clientDb = new Client({ ...client });
             await session.startTransaction();
-            let clientSaved = await super.save(clientDb, session);//usada para acessar a classe pai e salvar.
+            let clientSaved = await super.save(clientDb, session);
             await session.commitTransaction();
 
-            return { client: clientSaved, statusCode: 201 };//retorno
+            return { client: clientSaved, statusCode: 201 };
 
         } catch (e) {
 
             if (session.inTransaction()) {
-                await session.abortTransaction();//em caso de erro session aborta transação
+                await session.abortTransaction();
             }
 
             throw e;
         } finally {
-            session.endSession();// em caso de erro da session finaliza 
+            session.endSession();
         }
     };
 
-    async update(client) {// aqui onde faço o atualizar cliente
+    async update(client) {
         const session = await super.getSession();
         
         try {
             let errors = await this.validation(client);
 
-            const clientDb = await super.findById(client.id);//aqui to buscando o cliente com o id,com a função do base service.
+            const clientDb = await super.findById(client.id);
 
-            if (!clientDb) {//se não for encontrado retorno o status code de erro e a mensagem
-                return { error: errors, statusCode: 400, message: 'Cliente não encontrado' };//retorno em caso de erro
+            if (!clientDb) {
+                return { error: errors, statusCode: 400, message: 'Cliente não encontrado' };
             }
 
-            let clientSaved = await super.save(client, session);//usada para acessar a classe pai e salvar.
-
-            return { client: clientSaved, statusCode: 200 };//retorno correto
+            let clientSaved = await super.save(client, session);
+            return { client: clientSaved, statusCode: 200 };
         } catch (e) {
 
             if (session.inTransaction()) {
-                await session.abortTransaction();//em caso de erro session aborta transação
+                await session.abortTransaction();
             }
 
             throw e;
         } finally {
-            session.endSession();// em caso de erro da session finaliza 
+            session.endSession(); 
         }
     };
 
-    async findAll() {//aqui e para busca todos
-        const pathsValues = [//aqui é para mostrar os compos, aqui no caso é de pedidos(order)
+    async findAll() {
+        const pathsValues = [
             {
                 path: 'order'  
             }
@@ -131,9 +130,3 @@ module.exports = class ClientService extends BaseService {
         return await super.findPopulate({}, pathsValues);
     }
 }
-
-
-
-
-//service:
-//E onde fica  a validação do código,onde fica a regras do sistema,tem intermediação entre o model e o controller.
