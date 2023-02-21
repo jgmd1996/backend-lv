@@ -7,7 +7,7 @@ const orderSchema = new mongoose.Schema(
         paymentMethod: { type: String, required: true, max: 200, min: 2},
         delivery:{ type: String, required: true, max: 200, min: 2},
         products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
-        client: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Client' }],
+        client: { type: mongoose.Schema.Types.ObjectId, ref: 'Client' },
   },
   {
       versionKey: false

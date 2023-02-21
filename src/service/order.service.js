@@ -26,10 +26,6 @@ const schema = {
         }
     }, client: {
         presence: { allowEmpty: false, message: '^Cliente é obrigatório. ' },
-        length: {
-            maximum: 1,
-            tooLong: '^ Deve conter no máximo 1 cliente. '
-        }
     }, products: {
         presence: { allowEmpty: false, message: '^Produtos é obrigatório. ' },
     }
